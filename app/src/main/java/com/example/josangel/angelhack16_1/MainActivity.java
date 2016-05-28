@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+import com.example.josangel.angelhack16_1.service.RegisterService;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
+        Fabric.with(this, new Twitter(authConfig), new Crashlytics());
         setContentView(R.layout.activity_main);
 
         loginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
@@ -49,11 +51,16 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.i(TAG, "success: " + result.data);
 
+                // Save the data to Server
+                new RegisterService().execute(
+                        result.data.getUserId() + "",
+                        result.data.getUserName(),
+                        result.data.getAuthToken().toString(),
+                        result.data.getId() + ""
+                );
+
+                // Navigate user to map page
                 Intent mapIntent = new Intent(MainActivity.this, MapsActivity.class);
-                mapIntent.putExtra("userId", result.data.getUserId());
-                mapIntent.putExtra("userName", result.data.getUserName());
-                mapIntent.putExtra("authToken", result.data.getAuthToken());
-                mapIntent.putExtra("id", result.data.getId());
                 startActivity(mapIntent);
             }
             @Override
