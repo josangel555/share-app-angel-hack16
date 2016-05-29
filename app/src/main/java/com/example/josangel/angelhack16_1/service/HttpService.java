@@ -13,12 +13,12 @@ import java.net.URL;
 /**
  * Created by josangel on 5/28/16.
  */
-public class RegisterService extends AsyncTask<String, String, String> {
+public class HttpService extends AsyncTask<String, String, String> {
 
     private static final String TAG = "com.example.josangel";
     private Context context;
 
-    public RegisterService(Context context){
+    public HttpService(Context context){
         this.context = context;
     }
 
@@ -28,7 +28,7 @@ public class RegisterService extends AsyncTask<String, String, String> {
         String responseString = null;
         try{
 
-            URL url = new URL("http://192.168.3.234:8080/api/" + params[0]);
+            URL url = new URL("http://192.168.1.94:8080/api/" + params[0]);
 
             HttpURLConnection con;
             try {
