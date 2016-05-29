@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.example.josangel.angelhack16_1.service.PreferenceUtil;
 import com.example.josangel.angelhack16_1.service.RegisterService;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
@@ -51,13 +52,13 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.i(TAG, "success: " + result.data);
 
+                // Save login details locally
+                PreferenceUtil.saveToPrefs(MainActivity.this, PreferenceUtil.PREFS_LOGIN_USERNAME_KEY, result.data.getUserName());
+                PreferenceUtil.saveToPrefs(MainActivity.this, PreferenceUtil.PREFS_LOGIN_AUTH_TOKEN, result.data.getAuthToken().token);
+                PreferenceUtil.saveToPrefs(MainActivity.this, PreferenceUtil.PREFS_LOGIN_USER_ID, result.data.getUserId() + "");
+
                 // Save the data to Server
-                new RegisterService().execute(
-                        result.data.getUserId() + "",
-                        result.data.getUserName(),
-                        result.data.getAuthToken().toString(),
-                        result.data.getId() + ""
-                );
+                new RegisterService(MainActivity.this).execute("user/login");
 
                 // Navigate user to map page
                 Intent mapIntent = new Intent(MainActivity.this, MapsActivity.class);

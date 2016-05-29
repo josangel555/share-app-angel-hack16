@@ -1,14 +1,18 @@
 package com.example.josangel.angelhack16_1;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.example.josangel.angelhack16_1.service.RegisterService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -24,11 +28,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-        // Send data to server
-
     }
-
 
     /**
      * Manipulates the map once available.
@@ -43,9 +43,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        // TODO Get User location
+
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng userLoc = new LatLng(17.0, 78.0);
+        final Marker marker = mMap.addMarker(new MarkerOptions().position(userLoc).title("Current Location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc, 8.0f));
+
+        // Navigate to List page
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+                // Send Location to server
+                AsyncTask task = new RegisterService(MapsActivity.this).execute(
+                        "user/update-loc",
+                        "" + marker.getPosition().latitude + "," + marker.getPosition().longitude
+                );
+
+                Intent intent = new Intent(MapsActivity.this, ResultListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                marker.setPosition(cameraPosition.target);
+            }
+        });
     }
 }
