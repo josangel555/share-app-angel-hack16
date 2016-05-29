@@ -1,5 +1,6 @@
 package com.example.josangel.angelhack16_1;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.josangel.angelhack16_1.service.HttpService;
+
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class AddBooksActivity extends AppCompatActivity {
 
@@ -42,7 +46,24 @@ public class AddBooksActivity extends AppCompatActivity {
                 AsyncTask async = new HttpService(AddBooksActivity.this).execute("book/add", bookNameStr, bookAuthroStr,
                         bookPublisherStr, bookCostStr);
 
-                
+                try {
+                    String returnStr = (String) async.get();
+
+                    Toast.makeText(AddBooksActivity.this, returnStr, Toast.LENGTH_SHORT).show();
+
+                    if(returnStr.equals("SUCCESS")){
+
+                        finish();
+                    } else {
+
+                        // Display error saving book
+                    }
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
 
 
             }
