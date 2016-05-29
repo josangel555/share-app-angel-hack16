@@ -1,7 +1,10 @@
 package com.example.josangel.angelhack16_1;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -14,7 +17,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -26,6 +32,7 @@ import java.util.Map;
 public class ResultListActivity extends AppCompatActivity {
 
     private TextView tvResult;
+    private static final String TAG = "com.example.josangel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,16 @@ public class ResultListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result_list);
 
         String url = "http://192.168.1.94:8080/api/book/find";
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(ResultListActivity.this, AddBooksActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // get a JSON from server
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -42,11 +59,24 @@ public class ResultListActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
 
                         List<Map<String, String>> stringList = new ArrayList<>();
-                        Map<String, String> map1 = new HashMap<>();
-                        map1.put("bookName", "bookName");
-                        map1.put("author", "author");
-                        map1.put("userName", "userName");
-                        stringList.add(map1);
+
+                        try {
+
+                            JSONArray bookArray = response.getJSONArray("Books");
+
+                            for (int i=0; i<bookArray.length(); i++){
+                                JSONObject bookObj = bookArray.getJSONObject(i);
+
+                                Map<String, String> map = new HashMap<>();
+                                map.put("bookName", bookObj.getString("bookName"));
+                                map.put("author", bookObj.getString("author"));
+                                map.put("userName", bookObj.getString("userName"));
+                                stringList.add(map);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                         ListView listView = (ListView) findViewById(R.id.listView);
                         ListAdapter adapter =  new SimpleAdapter(ResultListActivity.this,

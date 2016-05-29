@@ -19,7 +19,8 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView" />
+        android:id="@+id/listView"
+        android:layout_marginTop="40dp"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -29,6 +30,8 @@
         android:src="@drawable/ic_add_black_24dp"
         android:layout_alignBottom="@+id/listView"
         android:layout_alignRight="@+id/listView"
-        android:layout_alignEnd="@+id/listView" />
+        android:layout_alignEnd="@+id/listView" >
+        <requestFocus/>
+    </android.support.design.widget.FloatingActionButton>
 
 </RelativeLayout>

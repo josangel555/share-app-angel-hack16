@@ -89,6 +89,21 @@ public class HttpService extends AsyncTask<String, String, String> {
             con.setRequestProperty("userId", loggedInUserId);
             con.setRequestProperty("authToken", loggedInAuthToken);
             con.setRequestProperty("loc", params[1]);
+
+        } else if(params[0].equals("book/add")){
+            if(params.length != 5){
+                throw new IllegalArgumentException("expect 5 arguments");
+            }
+
+            con.setRequestMethod("GET");
+            con.setRequestProperty("userName", loggedInUserName);
+            con.setRequestProperty("userId", loggedInUserId);
+            con.setRequestProperty("authToken", loggedInAuthToken);
+
+            con.setRequestProperty("bookName", params[1]);
+            con.setRequestProperty("bookAuthor", params[2]);
+            con.setRequestProperty("bookPublisher", params[3]);
+            con.setRequestProperty("bookCost", params[4]);
         }
 
         return con;
