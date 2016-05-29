@@ -88,6 +88,7 @@ public class HttpService extends AsyncTask<String, String, String> {
             con.setRequestProperty("userName", loggedInUserName);
             con.setRequestProperty("userId", loggedInUserId);
             con.setRequestProperty("authToken", loggedInAuthToken);
+
             con.setRequestProperty("loc", params[1]);
 
         } else if(params[0].equals("book/add")){

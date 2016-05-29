@@ -65,6 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.clear();
         // Add a marker in Sydney and move the camera
         LatLng userLoc = new LatLng(17.0, 78.0);
         marker = mMap.addMarker(new MarkerOptions().position(userLoc).title("Current Location"));
@@ -90,6 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
                 marker.setPosition(cameraPosition.target);
+                Toast.makeText(MapsActivity.this, "Tap on the map to Confirm location.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -112,6 +114,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(MapsActivity.this, "Location Updated: "
                     + mLastLocation.getLatitude() + ","
                     + mLastLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(MapsActivity.this, "Change the map center to adjust the location: ", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MapsActivity.this, "Tap on map to confirm: ", Toast.LENGTH_SHORT).show();
 
             LatLng userLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
             marker = mMap.addMarker(new MarkerOptions().position(userLoc).title("Current Location"));

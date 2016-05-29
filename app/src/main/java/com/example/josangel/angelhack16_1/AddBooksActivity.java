@@ -49,13 +49,12 @@ public class AddBooksActivity extends AppCompatActivity {
                 try {
                     String returnStr = (String) async.get();
 
-                    Toast.makeText(AddBooksActivity.this, returnStr, Toast.LENGTH_SHORT).show();
 
                     if(returnStr.equals("SUCCESS")){
-
+                        Toast.makeText(AddBooksActivity.this, "Book Added Successfully", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-
+                        Toast.makeText(AddBooksActivity.this, returnStr, Toast.LENGTH_SHORT).show();
                         // Display error saving book
                     }
 

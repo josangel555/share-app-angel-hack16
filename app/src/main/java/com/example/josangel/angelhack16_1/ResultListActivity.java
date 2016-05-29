@@ -87,7 +87,7 @@ public class ResultListActivity extends AppCompatActivity {
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Toast.makeText(ResultListActivity.this, "You clicked :: " + id, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ResultListActivity.this, "You clicked :: " + id + " " + view.getId(), Toast.LENGTH_SHORT).show();
                             }
                         });
 

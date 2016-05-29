@@ -40,6 +40,7 @@
             android:id="@+id/add_book_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
             android:hint="Book Author" />
 
     </android.support.design.widget.TextInputLayout>
@@ -47,12 +48,14 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/add_book_publisher_label"
         android:layout_width="match_parent"
+        android:paddingBottom="10dp"
         android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/add_book_publisher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
             android:hint="Book Publisher" />
 
     </android.support.design.widget.TextInputLayout>
@@ -60,6 +63,7 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/add_book_cost_label"
         android:layout_width="match_parent"
+        android:paddingBottom="10dp"
         android:layout_height="wrap_content">
 
         <EditText
